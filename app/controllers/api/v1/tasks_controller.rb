@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class TasksController < ApplicationController
+    class TasksController < AdminController
       before_action :set_task, only: [:show, :edit, :update, :destroy]
 
       # GET /tasks
@@ -23,9 +23,9 @@ module Api
       # POST /tasks
       def create
         @task = Task.new(task_params)
-
+        @task.user = @current_user
         if @task.save
-          render json: @task, status: :created, location: @task
+          render json: @task, status: :created
         else
           render json: @task.errors, status: :unprocessable_entity
         end
@@ -53,7 +53,7 @@ module Api
       end
 
       def task_params
-        params.require(:task).permit(:title, :description, :status, :priority, :due_date)
+        params.require(:task).permit(:title, :description, :status, :priority, :due_date, :user_id)
       end
     end
   end
