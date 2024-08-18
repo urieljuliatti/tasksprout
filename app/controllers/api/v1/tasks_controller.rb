@@ -23,7 +23,6 @@ module Api
       # POST /tasks
       def create
         @task = Task.new(task_params)
-        @task.user = current_user # Assumindo que você tem autenticação implementada
 
         if @task.save
           render json: @task, status: :created, location: @task
