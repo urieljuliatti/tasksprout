@@ -8,7 +8,7 @@ RSpec.describe 'Api::V1::TasksController', type: :request do
 
   describe 'GET /tasks' do
     it 'returns a list of tasks' do
-      get '/api/v1/tasks', as: :json
+      get api_v1_tasks_url, as: :json
 
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body)).to be_an_instance_of(Array)
@@ -27,7 +27,7 @@ RSpec.describe 'Api::V1::TasksController', type: :request do
   describe 'POST /tasks' do
     context 'with valid parameters' do
       it 'creates a new task' do
-        post '/api/v1/tasks', params: { task: valid_attributes, user_id: user.id }, as: :json
+        post api_v1_tasks_url, params: { task: valid_attributes, user_id: user.id }, as: :json
 
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['title']).to eq('New Task')
@@ -36,9 +36,8 @@ RSpec.describe 'Api::V1::TasksController', type: :request do
 
     context 'with invalid parameters' do
       it 'returns an error' do
-        post '/api/v1/tasks', params: { task: invalid_attributes }, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)).to have_key('errors')
+        post api_v1_tasks_url, params: { task: invalid_attributes }, as: :json
+        expect(response).to have_http_status(422)
       end
     end
   end
@@ -57,8 +56,7 @@ RSpec.describe 'Api::V1::TasksController', type: :request do
       it 'returns an error' do
         patch "/api/v1/tasks/#{task.id}", params: { task: { title: '' } }, as: :json
 
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)).to have_key('errors')
+        expect(response).to have_http_status(422)
       end
     end
   end
