@@ -27,7 +27,7 @@ RSpec.describe 'Api::V1::TasksController', type: :request do
   describe 'POST /tasks' do
     context 'with valid parameters' do
       it 'creates a new task' do
-        post api_v1_tasks_url, params: { task: valid_attributes, user_id: user.id }, as: :json
+        post api_v1_tasks_url, params: { task: attributes_for(:task), user_id: user.id }, as: :json
 
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['title']).to eq('New Task')
