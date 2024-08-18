@@ -18,7 +18,6 @@ module Api
       end
 
       def edit
-        @task = Task.find(params[:id])
       end
 
       # POST /tasks
