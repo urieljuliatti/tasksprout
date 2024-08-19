@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class Api::V1::TasksController < AdminController
+    class CommentsController < AdminController
       before_action :set_comment, only: [:show, :update, :destroy]
       before_action :set_task, only: [:index, :create]
 

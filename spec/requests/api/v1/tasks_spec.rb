@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::V1::TasksController', type: :request do
+RSpec.describe 'api/v1/tasks', type: :request do
   let!(:user) { create(:user) }
   let!(:task) { create(:task, user: user) }
   let(:valid_attributes) { { title: 'New Task', description: 'Task description', status: 'pending', priority: 'low', due_date: '2024-12-31' , user_id: user.id} }
