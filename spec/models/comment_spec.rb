@@ -4,11 +4,11 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-  # Teste de associações
+
   it { should belong_to(:user) }
   it { should belong_to(:task) }
 
-  # Teste de validação de conteúdo (caso seja necessário)
+
   it 'is valid with valid attributes' do
     user = FactoryBot.create(:user)
     task = FactoryBot.create(:task, user: user)
