@@ -3,6 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do
+
+
+  it { should belong_to(:user) }
+  it { should have_many(:comments).dependent(:destroy) }
+
+  # Teste de criação válida
+  it "is valid with valid attributes" do
+    user = FactoryBot.create(:user)
+    task = Task.new(
+      title: "Sample Task",
+      status: "pending",
+      priority: "medium",
+      user: user
+    )
+    expect(task).to be_valid
+  end
+
   # Teste para validar a presença do título
   it { should validate_presence_of(:title) }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :task do
     title { "MyString" }
@@ -6,5 +8,8 @@ FactoryBot.define do
     priority { "low" }
     due_date { "2024-08-18" }
     user
+    transient do
+      post { build(:comments) }
+    end
   end
 end
