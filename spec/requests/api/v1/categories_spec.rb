@@ -54,7 +54,7 @@ RSpec.describe 'api/v1/categories', type: :request do
       it 'creates a new category' do
         expect(response).to have_http_status(:created)
         expect(json['name']).to eq('New Category')
-        #expect(TaskCategory.count).to eq(1)
+        expect(TaskCategory.count).to eq(1)
       end
     end
 
