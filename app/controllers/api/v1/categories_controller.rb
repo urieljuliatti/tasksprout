@@ -20,7 +20,9 @@ module Api
 
       def create
         @category = Category.new(category_params)
+        #@task = Task.find(params[:task_id])
         if @category.save
+          #@category.task_categories << [@task, @category]
           render json: @category, status: :created
         else
           render json: @category.errors, status: :unprocessable_entity
