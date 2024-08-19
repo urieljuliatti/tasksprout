@@ -30,7 +30,7 @@ RSpec.describe 'Api::V1::CommentsController', type: :request do
     end
 
     it 'returns a 404 if the comment does not exist' do
-      get "/api/v1/comments/0", headers: headers
+      get '/api/v1/comments/0', headers: headers
       expect(response).to have_http_status(:not_found)
     end
   end
@@ -43,7 +43,7 @@ RSpec.describe 'Api::V1::CommentsController', type: :request do
         post api_v1_task_comments_path(task_id: task.id), params: { comment: valid_attributes }, headers: headers
       }.to change(Comment, :count).by(1)
       expect(response).to have_http_status(:created)
-      expect(json['content']).to eq('This is a new comment')
+      expect(JSON.parse(response.body)['content']).to eq('This is a new comment')
     end
 
     it 'returns a 422 if the comment is invalid' do
