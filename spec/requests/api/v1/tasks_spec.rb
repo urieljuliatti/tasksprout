@@ -10,7 +10,7 @@ RSpec.describe 'api/v1/tasks', type: :request do
   let!(:category) { create(:category) }
   let(:token) do
     post '/login', params: { email: user.email, password: user.password }, as: :json
-    JSON.parse(response.body)['token']
+    json['token']
   end
 
   let(:headers) { { 'ACCEPT' => 'application/json', 'Authorization' => "Bearer #{token}" } }
@@ -20,7 +20,7 @@ RSpec.describe 'api/v1/tasks', type: :request do
       get api_v1_tasks_url, as: :json, headers: headers
 
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)).to be_an_instance_of(Array)
+      expect(json).to be_an_instance_of(Array)
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe 'api/v1/tasks', type: :request do
       get "/api/v1/tasks/#{task.id}", as: :json, headers: headers
 
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)['id']).to eq(task.id)
+      expect(json['id']).to eq(task.id)
     end
   end
 
@@ -39,7 +39,7 @@ RSpec.describe 'api/v1/tasks', type: :request do
         post api_v1_tasks_url, params: { task: valid_attributes }, as: :json, headers: headers
 
         expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)['title']).to eq('New Task')
+        expect(json['title']).to eq('New Task')
       end
     end
 
@@ -57,7 +57,7 @@ RSpec.describe 'api/v1/tasks', type: :request do
         patch "/api/v1/tasks/#{task.id}", params: { task: { title: 'Updated Task' , category_ids: [category.id]} }, as: :json, headers: headers
 
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)['title']).to eq('Updated Task')
+        expect(json['title']).to eq('Updated Task')
       end
     end
 
@@ -77,5 +77,9 @@ RSpec.describe 'api/v1/tasks', type: :request do
       expect(response).to have_http_status(:no_content)
       expect(Task.exists?(task.id)).to be_falsey
     end
+  end
+
+  def json
+    JSON.parse(response.body)
   end
 end

@@ -8,7 +8,6 @@ RSpec.describe Comment, type: :model do
   it { should belong_to(:user) }
   it { should belong_to(:task) }
 
-
   it 'is valid with valid attributes' do
     user = FactoryBot.create(:user)
     task = FactoryBot.create(:task, user: user)

@@ -5,14 +5,12 @@ module Api
     class TasksController < AdminController
       before_action :set_task, only: [:show, :edit, :update, :destroy]
 
-      # GET /tasks
       def index
         @tasks = Task.all
 
         render json: @tasks
       end
 
-      # GET /tasks/:id
       def show
         render json: @task
       end
@@ -20,7 +18,6 @@ module Api
       def edit
       end
 
-      # POST /tasks
       def create
         @task = Task.new(task_params)
         @task.user = @current_user
@@ -31,7 +28,6 @@ module Api
         end
       end
 
-      # PATCH/PUT /tasks/:id
       def update
         @categories = params[:category_ids]
         if @task.update(task_params)
@@ -46,7 +42,6 @@ module Api
         end
       end
 
-      # DELETE /tasks/:id
       def destroy
         @task.destroy
         head :no_content

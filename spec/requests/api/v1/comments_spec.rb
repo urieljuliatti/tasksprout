@@ -8,7 +8,7 @@ RSpec.describe 'api/v1/comments', type: :request do
   let!(:comment) { FactoryBot.create(:comment, task: task, user: user) }
   let(:token) do
     post '/login', params: { email: user.email, password: user.password }, as: :json
-    JSON.parse(response.body)['token']
+    json['token']
   end
 
   let(:headers) { { 'ACCEPT' => 'application/json', 'Authorization' => "Bearer #{token}" } }
@@ -17,8 +17,8 @@ RSpec.describe 'api/v1/comments', type: :request do
     it 'returns comments for the task' do
       get "/api/v1/tasks/#{task.id}/comments", as: :json, headers: headers
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)).not_to be_empty
-      expect(JSON.parse(response.body).size).to eq(1)
+      expect(json).not_to be_empty
+      expect(json.size).to eq(1)
     end
   end
 
@@ -26,7 +26,7 @@ RSpec.describe 'api/v1/comments', type: :request do
     it 'returns the comment' do
       get "/api/v1/comments/#{comment.id}", as: :json, headers: headers
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)['id']).to eq(comment.id)
+      expect(json['id']).to eq(comment.id)
     end
 
     it 'returns a 404 if the comment does not exist' do
@@ -43,7 +43,7 @@ RSpec.describe 'api/v1/comments', type: :request do
         post api_v1_task_comments_path(task_id: task.id), params: { comment: valid_attributes }, as: :json, headers: headers
       }.to change(Comment, :count).by(1)
       expect(response).to have_http_status(:created)
-      expect(JSON.parse(response.body)['content']).to eq('This is a new comment')
+      expect(json['content']).to eq('This is a new comment')
     end
 
     it 'returns a 422 if the comment is invalid' do
@@ -74,5 +74,9 @@ RSpec.describe 'api/v1/comments', type: :request do
       }.to change(Comment, :count).by(-1)
       expect(response).to have_http_status(:no_content)
     end
+  end
+
+  def json
+    JSON.parse(response.body)
   end
 end

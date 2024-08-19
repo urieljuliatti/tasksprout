@@ -11,7 +11,7 @@ RSpec.describe 'api/v1/categories', type: :request do
   let(:invalid_attributes) { { name: '' } }
   let(:token) do
     post '/login', params: { email: 'admin2@example.com', password: '123456' }, as: :json
-    JSON.parse(response.body)['token']
+    json['token']
   end
 
   let(:headers) { { 'ACCEPT' => 'application/json', 'Authorization' => "Bearer #{token}" } }
@@ -99,7 +99,6 @@ RSpec.describe 'api/v1/categories', type: :request do
     end
   end
 
-  # Helper method to parse JSON response
   def json
     JSON.parse(response.body)
   end

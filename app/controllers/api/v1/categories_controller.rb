@@ -6,17 +6,14 @@ module Api
     class CategoriesController < ApplicationController
       before_action :set_category, only: [:show, :update, :destroy]
 
-
       def index
         @categories = Category.all
         render json: @categories
       end
 
-
       def show
         render json: @category
       end
-
 
       def create
         @category = Category.new(category_params)
@@ -31,7 +28,6 @@ module Api
         end
       end
 
-
       def update
         if @category.update(category_params)
           render json: @category
@@ -39,7 +35,6 @@ module Api
           render json: @category.errors, status: :unprocessable_entity
         end
       end
-
 
       def destroy
         @category.destroy

@@ -12,11 +12,9 @@ module Api
         render json: @comments
       end
 
-
       def show
         render json: @comment
       end
-
 
       def create
         @comment = @task.comments.new(comment_params)
@@ -27,7 +25,6 @@ module Api
           render json: @comment.errors, status: :unprocessable_entity
         end
       end
-
 
       def update
         if @comment.update(comment_params)
