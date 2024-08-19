@@ -4,31 +4,37 @@ require 'rails_helper'
 
 RSpec.describe Task, type: :model do
 
-
   it { should belong_to(:user) }
   it { should have_many(:comments).dependent(:destroy) }
+  it { should have_many(:task_categories) }
+  it { should have_many(:categories).through(:task_categories) }
 
-  # Teste de criação válida
-  it "is valid with valid attributes" do
-    user = FactoryBot.create(:user)
-    task = Task.new(
-      title: "Sample Task",
-      status: "pending",
-      priority: "medium",
-      user: user
-    )
-    expect(task).to be_valid
-  end
-
-  # Teste para validar a presença do título
   it { should validate_presence_of(:title) }
-
-  # Teste para validar a inclusão do status em um conjunto específico de valores
   it { should validate_inclusion_of(:status).in_array(%w(pending in_progress completed)) }
-
-  # Teste para validar a inclusão da prioridade em um conjunto específico de valores
   it { should validate_inclusion_of(:priority).in_array(%w(low medium high)) }
 
-  # Teste para verificar a associação com User
-  it { should belong_to(:user) }
+  context 'when creating a task' do
+    it 'is valid with valid attributes' do
+      user = User.create!(email: 'user@example.com', password: 'password') # Cria um usuário para a associação
+      task = Task.new(title: 'Test Task', status: 'pending', priority: 'medium', user: user)
+      expect(task).to be_valid
+    end
+
+    it 'is not valid without a title' do
+      task = Task.new(title: nil, status: 'pending', priority: 'medium')
+      expect(task).not_to be_valid
+    end
+
+    it 'is not valid with an invalid status' do
+      user = User.create!(email: 'user@example.com', password: 'password')
+      task = Task.new(title: 'Test Task', status: 'invalid_status', priority: 'medium', user: user)
+      expect(task).not_to be_valid
+    end
+
+    it 'is not valid with an invalid priority' do
+      user = User.create!(email: 'user@example.com', password: 'password')
+      task = Task.new(title: 'Test Task', status: 'pending', priority: 'invalid_priority', user: user)
+      expect(task).not_to be_valid
+    end
+  end
 end
