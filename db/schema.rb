@@ -10,9 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_19_094735) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_19_113823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "comments", force: :cascade do |t|
     t.text "content"
@@ -22,6 +28,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_094735) do
     t.datetime "updated_at", null: false
     t.index ["task_id"], name: "index_comments_on_task_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "task_categories", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_task_categories_on_category_id"
+    t.index ["task_id"], name: "index_task_categories_on_task_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -50,5 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_19_094735) do
 
   add_foreign_key "comments", "tasks"
   add_foreign_key "comments", "users"
+  add_foreign_key "task_categories", "categories"
+  add_foreign_key "task_categories", "tasks"
   add_foreign_key "tasks", "users"
 end
