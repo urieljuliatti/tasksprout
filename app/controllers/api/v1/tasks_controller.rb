@@ -35,6 +35,11 @@ module Api
       def update
         @categories = params[:category_ids]
         if @task.update(task_params)
+
+          if params[:category_ids]
+            @task.categories = Category.find(params[:category_ids])
+          end
+
           render json: @task
         else
           render json: @task.errors, status: :unprocessable_entity

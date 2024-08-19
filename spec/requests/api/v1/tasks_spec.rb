@@ -7,6 +7,7 @@ RSpec.describe 'api/v1/tasks', type: :request do
   let!(:task) { create(:task, user: user) }
   let(:valid_attributes) { { title: 'New Task', description: 'Task description', status: 'pending', priority: 'low', due_date: '2024-12-31' , user_id: user.id} }
   let(:invalid_attributes) { { title: '', status: 'invalid_status' } }
+  let!(:category) { create(:category) }
   let(:token) do
     post '/login', params: { email: user.email, password: user.password }, as: :json
     JSON.parse(response.body)['token']
@@ -53,7 +54,7 @@ RSpec.describe 'api/v1/tasks', type: :request do
   describe 'PATCH/PUT /tasks/:id' do
     context 'with valid parameters' do
       it 'updates the task' do
-        patch "/api/v1/tasks/#{task.id}", params: { task: { title: 'Updated Task' } }, as: :json, headers: headers
+        patch "/api/v1/tasks/#{task.id}", params: { task: { title: 'Updated Task' , category_ids: [category.id]} }, as: :json, headers: headers
 
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['title']).to eq('Updated Task')
